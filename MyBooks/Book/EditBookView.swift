@@ -20,6 +20,7 @@ struct EditBookView: View {
     @State private var dateCompleted = Date.distantPast
     @State private var firstView = true
     @State private var recommendedBy = ""
+    @State private var showGenres = false
     
     var body: some View {
         HStack {
@@ -105,11 +106,28 @@ struct EditBookView: View {
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color(uiColor: .tertiarySystemFill), lineWidth: 2)
                 )
-            NavigationLink {
-                QuotesListView(book: book)
-            } label: {
-                let count = book.quotes?.count ?? 0
-                Label("^[\(count) Quotes](inflect: true)", systemImage: "quote.opening")
+            if let genres = book.genres {
+                ViewThatFits {
+                    GenreStackView(genres: genres)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        GenreStackView(genres: genres)
+                    }
+                }
+            }
+            HStack {
+                Button("Genres", systemImage: "bookmark.fill") {
+                    showGenres.toggle()
+                }
+                .sheet(isPresented: $showGenres) {
+                    GenresView(book: book)
+                }
+                NavigationLink {
+                    QuotesListView(book: book)
+                } label: {
+                    let count = book.quotes?.count ?? 0
+                    Label("^[\(count) Quotes](inflect: true)", systemImage: "quote.opening")
+                }
+
             }
             .buttonStyle(.bordered)
             .frame(maxWidth: .infinity, alignment: .trailing)
