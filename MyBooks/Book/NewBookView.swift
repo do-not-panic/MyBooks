@@ -37,7 +37,6 @@ struct NewBookView: View {
                     }
                 }
             }
-            
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GenreStackView: View {
+struct GenresStackView: View {
     var genres: [Genre]
     var body: some View {
         HStack {

@@ -22,11 +22,11 @@ struct BookList: View {
             [SortDescriptor(\Book.author)]
         }
         let predicate = #Predicate<Book> { book in
-            book.title.localizedStandardContains(filterString) ||
-            book.author.localizedStandardContains(filterString) ||
-            filterString.isEmpty
+            book.title.localizedStandardContains(filterString)
+            || book.author.localizedStandardContains(filterString)
+            || filterString.isEmpty
         }
-        _books = Query(filter: predicate ,sort: sortDescriptors)
+        _books = Query(filter: predicate, sort: sortDescriptors)
     }
     
     var body: some View {
@@ -56,9 +56,9 @@ struct BookList: View {
                                     }
                                     if let genres = book.genres {
                                         ViewThatFits {
-                                            GenreStackView(genres: genres)
+                                            GenresStackView(genres: genres)
                                             ScrollView(.horizontal, showsIndicators: false) {
-                                                GenreStackView(genres: genres)
+                                                GenresStackView(genres: genres)
                                             }
                                         }
                                        

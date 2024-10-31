@@ -8,16 +8,18 @@
 import SwiftUI
 import SwiftData
 
-enum SortOrder: String, CaseIterable, Identifiable {
+enum SortOrder: LocalizedStringResource, Identifiable, CaseIterable {
     case status, title, author
     
-    var id: Self { self }
+    var id: Self {
+        self
+    }
 }
 
 struct BookListView: View {
-
+    
     @State private var createNewBook = false
-    @State private var sortOrder: SortOrder = .status
+    @State private var sortOrder = SortOrder.status
     @State private var filter = ""
     
     var body: some View {
@@ -30,24 +32,24 @@ struct BookListView: View {
             .buttonStyle(.bordered)
             BookList(sortOrder: sortOrder, filterString: filter)
                 .searchable(text: $filter, prompt: Text("Filter on title or author"))
-            .navigationTitle("My Books")
-            .toolbar {
-                Button {
-                    createNewBook = true
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .imageScale(.large)
+                .navigationTitle("My Books")
+                .toolbar {
+                    Button {
+                        createNewBook = true
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .imageScale(.large)
+                    }
                 }
-            }
-            .sheet(isPresented: $createNewBook) {
-                NewBookView()
-                    .presentationDetents([.medium])
-            }
+                .sheet(isPresented: $createNewBook) {
+                    NewBookView()
+                        .presentationDetents([.medium])
+                }
         }
     }
 }
 
-#Preview {
+#Preview("English") {
     let preview = Preview(Book.self)
     let books = Book.sampleBooks
     let genres = Genre.sampleGenres
@@ -55,4 +57,15 @@ struct BookListView: View {
     preview.addExamples(genres)
     return BookListView()
         .modelContainer(preview.container)
+}
+
+#Preview("German") {
+    let preview = Preview(Book.self)
+    let books = Book.sampleBooks
+    let genres = Genre.sampleGenres
+    preview.addExamples(books)
+    preview.addExamples(genres)
+    return BookListView()
+        .modelContainer(preview.container)
+        .environment(\.locale, Locale(identifier: "de_DE"))
 }

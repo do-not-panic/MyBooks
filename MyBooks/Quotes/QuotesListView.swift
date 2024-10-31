@@ -22,7 +22,7 @@ struct QuotesListView: View {
         GroupBox {
             HStack {
                 LabeledContent("Page") {
-                    TextField("Page #", text: $page)
+                    TextField("page #", text: $page)
                         .autocorrectionDisabled()
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 150)
@@ -46,8 +46,8 @@ struct QuotesListView: View {
                     } else {
                         let quote = page.isEmpty ? Quote(text: text) : Quote(text: text, page: page)
                         book.quotes?.append(quote)
-                        page = ""
                         text = ""
+                        page = ""
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -83,9 +83,12 @@ struct QuotesListView: View {
             .onDelete { indexSet in
                 withAnimation {
                     indexSet.forEach { index in
-                        if let quote = book.quotes?[index] {
-                            modelContext.delete(quote)
-                        }
+                        let quote = sortedQuotes[index]
+                        book.quotes?.forEach({ bookQuote in
+                            if quote.id == bookQuote.id {
+                                modelContext.delete(quote)
+                            }
+                        })
                     }
                 }
             }
