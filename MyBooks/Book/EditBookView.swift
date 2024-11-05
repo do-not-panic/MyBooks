@@ -147,6 +147,7 @@ struct EditBookView: View {
             TextEditor(text: $synopsis)
                 .padding(5)
                 .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(uiColor: .tertiarySystemFill), lineWidth: 2))
+                //.frame(maxWidth: .infinity, minHeight:200) // fix?
             if let genres = book.genres {
                 ViewThatFits {
                     GenresStackView(genres: genres)
